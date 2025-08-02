@@ -2,19 +2,27 @@ const quoteText = document.getElementById("quote");
 const authorText = document.getElementById("author");
 const newQuoteBtn = document.getElementById("new-quote");
 
-async function getQuote() {
-  try {
-    const response = await fetch("https://api.quotable.io/random");
-    const data = await response.json();
-    quoteText.textContent = `"${data.content}"`;
-    authorText.textContent = `— ${data.author}`;
-  } catch (error) {
-    quoteText.textContent = "Oops! Couldn't fetch a quote.";
-    authorText.textContent = "";
+let quotes=[];
+
+async function getQuotes() {
+  try{
+    const response=await fetch("quotes.json");
+    quotes=await response.json();
+    getLocalQuote();
   }
+  catch(error){
+    quoteText.textContent="Error: "+error;
+  }
+  
 }
 
-newQuoteBtn.addEventListener("click", getQuote);
+function getLocalQuote() {
+ const random = Math.floor(Math.random() * quotes.length);
+ const quote = quotes[random];
+ quoteText.textContent = '"'+quote.text+'"';
+ authorText.textContent = '-'+quote.author;
+}
 
-// Load an initial quote
-getQuote();
+newQuoteBtn.addEventListener("click", getLocalQuote);
+
+getQuotes();
