@@ -16,6 +16,7 @@ async function getQuotes() {
   
 }
 
+
 function getLocalQuote() {
  const random = Math.floor(Math.random() * quotes.length);
  const quote = quotes[random];
